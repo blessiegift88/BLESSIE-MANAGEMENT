@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLESSIE MANAGEMENT</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      padding: 24px 16px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: bold;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 30px;
+    }
+
+    .menu-title {
+      font-size: 11px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      margin: 20px 10px 8px;
+      letter-spacing: 1px;
+    }
+
+    .menu button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 12px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      text-align: left;
+      cursor: pointer;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    .menu button:hover,
+    .menu button.active {
+      background: #f0fdf4;
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .date {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 5px;
+    }
+
+    .profile {
+      background: white;
+      border: 1px solid #e5e7eb;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .card-label {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .card-value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .green {
+      color: #15803d;
+    }
+
+    .red {
+      color: #dc2626;
+    }
+
+    .blue {
+      color: #2563eb;
+    }
+
+    /* CONTENT */
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 10px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+    }
+
+    /* BUTTON */
+    .btn {
+      background: #15803d;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn:hover {
+      background: #166534;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #4b5563;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #15803d;
+    }
+
+    /* PAGE */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 210px;
+      }
+
+      .main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .app {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 18px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">BLESSIE</div>
+    <div class="subtitle">MANAGEMENT SYSTEM</div>
+
+    <div class="menu">
+
+      <div class="menu-title">Utama</div>
+
+      <button class="active" onclick="showPage('dashboard', this)">
+        🏠 Dashboard
+      </button>
+
+      <div class="menu-title">Inventory</div>
+
+      <button onclick="showPage('bahan', this)">
+        📦 Bahan Baku
+      </button>
+
+      <button onclick="showPage('masuk', this)">
+        📥 Bahan Masuk
+      </button>
+
+      <button onclick="showPage('keluar', this)">
+        📤 Bahan Keluar
+      </button>
+
+      <button onclick="showPage('mutasi', this)">
+        🔄 Riwayat Stok
+      </button>
+
+      <div class="menu-title">Keuangan</div>
+
+      <button onclick="showPage('pengeluaran', this)">
+        💸 Pengeluaran
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page active">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="date" id="tanggal"></div>
+        </div>
+
+        <div class="profile">
+          👤 BLESSIE ADMIN
+        </div>
+
+      </div>
+
+
+      <!-- CARDS -->
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="card-label">Penjualan Hari Ini</div>
+          <div class="card-value green" id="penjualan">
+            Rp0
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Pemasukan</div>
+          <div class="card-value blue" id="pemasukan">
+            Rp0
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Pengeluaran</div>
+          <div class="card-value red" id="pengeluaranTotal">
+            Rp0
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Jumlah Bahan</div>
+          <div class="card-value" id="jumlahBahan">
+            0
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="grid">
+
+        <div class="panel">
+
+          <div class="panel-title">
+            📈 Ringkasan Aktivitas
+          </div>
+
+          <div class="empty">
+            Belum ada transaksi.
+            <br>
+            Data aktivitas akan muncul di sini.
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-title">
+            ⚠️ Stok Menipis
+          </div>
+
+          <div id="stokMenipis" class="empty">
+            Belum ada data bahan.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BAHAN -->
+    <section id="bahan" class="page">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Bahan Baku</div>
+          <div class="date">
+            Kelola seluruh bahan yang digunakan BLESSIE
+          </div>
+        </div>
+
+        <button class="btn" onclick="tambahBahan()">
+          + Tambah Bahan
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          📦 Daftar Bahan
+        </div>
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Nama Bahan</th>
+              <th>Kategori</th>
+              <th>Satuan</th>
+              <th>Stok</th>
+              <th>Minimum</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabelBahan">
+
+            <tr>
+              <td colspan="5" class="empty">
+                Belum ada bahan.
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- BAHAN MASUK -->
+    <section id="masuk" class="page">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Bahan Masuk</div>
+          <div class="date">
+            Catat pembelian bahan
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel">
+
+        <div class="panel-title">
+          📥 Tambah Bahan Masuk
+        </div>
+
+        <div class="form-group">
+
+          <label>Pilih Bahan</label>
+
+          <select id="bahanMasukSelect"></select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Jumlah</label>
+
+          <input
+            type="number"
+            id="jumlahMasuk"
+            placeholder="Contoh: 500"
+          >
+
+        </div>
+
+        <button class="btn" onclick="bahanMasuk()">
+          Simpan Bahan Masuk
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- BAHAN KELUAR -->
+    <section id="keluar" class="page">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Bahan Keluar</div>
+          <div class="date">
+            Catat penggunaan bahan
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel">
+
+        <div class="panel-title">
+          📤 Kurangi Stok
+        </div>
+
+        <div class="form-group">
+
+          <label>Pilih Bahan</label>
+
+          <select id="bahanKeluarSelect"></select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Jumlah</label>
+
+          <input
+            type="number"
+            id="jumlahKeluar"
+            placeholder="Contoh: 10"
+          >
+
+        </div>
+
+        <button class="btn" onclick="bahanKeluar()">
+          Simpan Bahan Keluar
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- MUTASI -->
+    <section id="mutasi" class="page">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Riwayat Stok</div>
+          <div class="date">
+            Semua perubahan stok
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Tanggal</th>
+              <th>Bahan</th>
+              <th>Jenis</th>
+              <th>Jumlah</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="tabelMutasi">
+
+            <tr>
+              <td colspan="4" class="empty">
+                Belum ada mutasi stok.
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- PENGELUARAN -->
+
+    <section id="pengeluaran" class="page">
+
+      <div class="topbar">
+
+        <div>
+          <div class="page-title">Pengeluaran</div>
+          <div class="date">
+            Catat biaya operasional BLESSIE
+          </div>
+        </div>
+
+        <button class="btn" onclick="catatPengeluaran()">
+          + Tambah Pengeluaran
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          💸 Riwayat Pengeluaran
+        </div>
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Tanggal</th>
+              <th>Keterangan</th>
+              <th>Nominal</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="tabelPengeluaran">
+
+            <tr>
+              <td colspan="3" class="empty">
+                Belum ada pengeluaran.
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+  /* =========================
+     DATA
+  ========================= */
+
+  let bahan =
+    JSON.parse(localStorage.getItem("blessie_bahan")) || [];
+
+  let mutasi =
+    JSON.parse(localStorage.getItem("blessie_mutasi")) || [];
+
+  let pengeluaran =
+    JSON.parse(localStorage.getItem("blessie_pengeluaran")) || [];
+
+
+  /* =========================
+     FORMAT RUPIAH
+  ========================= */
+
+  function rupiah(angka) {
+
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0
+    }).format(angka);
+
+  }
+
+
+  /* =========================
+     NAVIGATION
+  ========================= */
+
+  function showPage(page, button) {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(p => p.classList.remove("active"));
+
+    document
+      .getElementById(page)
+      .classList.add("active");
+
+    document
+      .querySelectorAll(".menu button")
+      .forEach(b => b.classList.remove("active"));
+
+    button.classList.add("active");
+
+    refresh();
+
+  }
+
+
+  /* =========================
+     TAMBAH BAHAN
+  ========================= */
+
+  function tambahBahan() {
+
+    let nama = prompt("Nama bahan:");
+
+    if (!nama) return;
+
+    let kategori = prompt("Kategori:");
+
+    let satuan = prompt(
+      "Satuan (lembar / pcs / ml / meter):"
+    );
+
+    let stok = Number(
+      prompt("Stok awal:")
+    );
+
+    let minimum = Number(
+      prompt("Stok minimum:")
+    );
+
+    bahan.push({
+
+      id: Date.now(),
+
+      nama: nama,
+
+      kategori: kategori || "-",
+
+      satuan: satuan || "pcs",
+
+      stok: stok || 0,
+
+      minimum: minimum || 0
+
+    });
+
+    save();
+
+    refresh();
+
+    alert("Bahan berhasil ditambahkan.");
+
+  }
+
+
+  /* =========================
+     BAHAN MASUK
+  ========================= */
+
+  function bahanMasuk() {
+
+    let id =
+      Number(
+        document.getElementById(
+          "bahanMasukSelect"
+        ).value
+      );
+
+    let jumlah =
+      Number(
+        document.getElementById(
+          "jumlahMasuk"
+        ).value
+      );
+
+    let item =
+      bahan.find(b => b.id === id);
+
+    if (!item || jumlah <= 0) {
+
+      alert("Data belum lengkap.");
+
+      return;
+
+    }
+
+    item.stok += jumlah;
+
+    mutasi.push({
+
+      tanggal: new Date().toLocaleString("id-ID"),
+
+      bahan: item.nama,
+
+      jenis: "Bahan Masuk",
+
+      jumlah: "+" + jumlah
+
+    });
+
+    save();
+
+    refresh();
+
+    document.getElementById(
+      "jumlahMasuk"
+    ).value = "";
+
+    alert("Stok berhasil ditambahkan.");
+
+  }
+
+
+  /* =========================
+     BAHAN KELUAR
+  ========================= */
+
+  function bahanKeluar() {
+
+    let id =
+      Number(
+        document.getElementById(
+          "bahanKeluarSelect"
+        ).value
+      );
+
+    let jumlah =
+      Number(
+        document.getElementById(
+          "jumlahKeluar"
+        ).value
+      );
+
+    let item =
+      bahan.find(b => b.id === id);
+
+    if (!item || jumlah <= 0) {
+
+      alert("Data belum lengkap.");
+
+      return;
+
+    }
+
+    if (jumlah > item.stok) {
+
+      alert("Stok tidak mencukupi.");
+
+      return;
+
+    }
+
+    item.stok -= jumlah;
+
+    mutasi.push({
+
+      tanggal: new Date().toLocaleString("id-ID"),
+
+      bahan: item.nama,
+
+      jenis: "Bahan Keluar",
+
+      jumlah: "-" + jumlah
+
+    });
+
+    save();
+
+    refresh();
+
+    document.getElementById(
+      "jumlahKeluar"
+    ).value = "";
+
+    alert("Stok berhasil dikurangi.");
+
+  }
+
+
+  /* =========================
+     PENGELUARAN
+  ========================= */
+
+  function catatPengeluaran() {
+
+    let keterangan =
+      prompt("Keterangan pengeluaran:");
+
+    if (!keterangan) return;
+
+    let nominal =
+      Number(
+        prompt("Nominal (contoh: 50000):")
+      );
+
+    if (!nominal || nominal <= 0) return;
+
+    pengeluaran.push({
+
+      tanggal: new Date().toLocaleString("id-ID"),
+
+      keterangan: keterangan,
+
+      nominal: nominal
+
+    });
+
+    save();
+
+    refresh();
+
+    alert("Pengeluaran berhasil dicatat.");
+
+  }
+
+
+  /* =========================
+     SAVE
+  ========================= */
+
+  function save() {
+
+    localStorage.setItem(
+      "blessie_bahan",
+      JSON.stringify(bahan)
+    );
+
+    localStorage.setItem(
+      "blessie_mutasi",
+      JSON.stringify(mutasi)
+    );
+
+    localStorage.setItem(
+      "blessie_pengeluaran",
+      JSON.stringify(pengeluaran)
+    );
+
+  }
+
+
+  /* =========================
+     REFRESH
+  ========================= */
+
+  function refresh() {
+
+    document.getElementById(
+      "jumlahBahan"
+    ).innerText = bahan.length;
+
+
+    /* TABEL BAHAN */
+
+    let tabel =
+      document.getElementById(
+        "tabelBahan"
+      );
+
+    if (bahan.length === 0) {
+
+      tabel.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty">
+            Belum ada bahan.
+          </td>
+        </tr>
+      `;
+
+    } else {
+
+      tabel.innerHTML =
+        bahan.map(b => `
+
+          <tr>
+
+            <td>${b.nama}</td>
+
+            <td>${b.kategori}</td>
+
+            <td>${b.satuan}</td>
+
+            <td>
+              <strong>${b.stok}</strong>
+            </td>
+
+            <td>${b.minimum}</td>
+
+          </tr>
+
+        `).join("");
+
+    }
+
+
+    /* SELECT */
+
+    let options =
+      bahan.map(b => `
+        <option value="${b.id}">
+          ${b.nama} — Stok ${b.stok} ${b.satuan}
+        </option>
+      `).join("");
+
+    document.getElementById(
+      "bahanMasukSelect"
+    ).innerHTML =
+      options ||
+      `<option value="">Belum ada bahan</option>`;
+
+    document.getElementById(
+      "bahanKeluarSelect"
+    ).innerHTML =
+      options ||
+      `<option value="">Belum ada bahan</option>`;
+
+
+    /* MUTASI */
+
+    let tabelMutasi =
+      document.getElementById(
+        "tabelMutasi"
+      );
+
+    if (mutasi.length === 0) {
+
+      tabelMutasi.innerHTML = `
+        <tr>
+          <td colspan="4" class="empty">
+            Belum ada mutasi stok.
+          </td>
+        </tr>
+      `;
+
+    } else {
+
+      tabelMutasi.innerHTML =
+        [...mutasi]
+        .reverse()
+        .map(m => `
+
+          <tr>
+
+            <td>${m.tanggal}</td>
+
+            <td>${m.bahan}</td>
+
+            <td>${m.jenis}</td>
+
+            <td>${m.jumlah}</td>
+
+          </tr>
+
+        `).join("");
+
+    }
+
+
+    /* PENGELUARAN */
+
+    let tabelPengeluaran =
+      document.getElementById(
+        "tabelPengeluaran"
+      );
+
+    if (pengeluaran.length === 0) {
+
+      tabelPengeluaran.innerHTML = `
+        <tr>
+          <td colspan="3" class="empty">
+            Belum ada pengeluaran.
+          </td>
+        </tr>
+      `;
+
+    } else {
+
+      tabelPengeluaran.innerHTML =
+        [...pengeluaran]
+        .reverse()
+        .map(p => `
+
+          <tr>
+
+            <td>${p.tanggal}</td>
+
+            <td>${p.keterangan}</td>
+
+            <td>${rupiah(p.nominal)}</td>
+
+          </tr>
+
+        `).join("");
+
+    }
+
+
+    /* TOTAL PENGELUARAN */
+
+    let total =
+      pengeluaran.reduce(
+        (sum, p) => sum + p.nominal,
+        0
+      );
+
+    document.getElementById(
+      "pengeluaranTotal"
+    ).innerText =
+      rupiah(total);
+
+
+    /* STOK MENIPIS */
+
+    let menipis =
+      bahan.filter(
+        b => b.stok <= b.minimum
+      );
+
+    let stokBox =
+      document.getElementById(
+        "stokMenipis"
+      );
+
+    if (menipis.length === 0) {
+
+      stokBox.innerHTML =
+        "Tidak ada stok yang menipis.";
+
+    } else {
+
+      stokBox.innerHTML =
+        menipis.map(b => `
+          <div style="
+            padding:10px;
+            border-bottom:1px solid #eee;
+          ">
+            <strong>${b.nama}</strong>
+            <br>
+            <small>
+              Sisa ${b.stok} ${b.satuan}
+            </small>
+          </div>
+        `).join("");
+
+    }
+
+  }
+
+
+  /* =========================
+     TANGGAL
+  ========================= */
+
+  document.getElementById(
+    "tanggal"
+  ).innerText =
+    new Date().toLocaleDateString(
+      "id-ID",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }
+    );
+
+
+  refresh();
+
+</script>
+
+</body>
+</html>
