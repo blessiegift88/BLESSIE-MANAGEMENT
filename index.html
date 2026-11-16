@@ -1,1212 +1,489 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BLESSIE MANAGEMENT</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f5f7fb;
-      color: #1f2937;
-    }
-
-    .app {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 250px;
-      background: #ffffff;
-      border-right: 1px solid #e5e7eb;
-      padding: 24px 16px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-    }
-
-    .logo {
-      font-size: 21px;
-      font-weight: bold;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 30px;
-    }
-
-    .menu-title {
-      font-size: 11px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      margin: 20px 10px 8px;
-      letter-spacing: 1px;
-    }
-
-    .menu button {
-      width: 100%;
-      border: none;
-      background: transparent;
-      padding: 12px;
-      margin-bottom: 4px;
-      border-radius: 10px;
-      text-align: left;
-      cursor: pointer;
-      color: #4b5563;
-      font-size: 14px;
-    }
-
-    .menu button:hover,
-    .menu button.active {
-      background: #f0fdf4;
-      color: #15803d;
-      font-weight: 600;
-    }
-
-    /* MAIN */
-    .main {
-      margin-left: 250px;
-      width: calc(100% - 250px);
-      padding: 30px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-
-    .page-title {
-      font-size: 25px;
-      font-weight: 700;
-    }
-
-    .date {
-      font-size: 13px;
-      color: #6b7280;
-      margin-top: 5px;
-    }
-
-    .profile {
-      background: white;
-      border: 1px solid #e5e7eb;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-    }
-
-    /* CARDS */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 25px;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 20px;
-    }
-
-    .card-label {
-      color: #6b7280;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .card-value {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .green {
-      color: #15803d;
-    }
-
-    .red {
-      color: #dc2626;
-    }
-
-    .blue {
-      color: #2563eb;
-    }
-
-    /* CONTENT */
-    .grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-    }
-
-    .panel {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 20px;
-    }
-
-    .panel-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 18px;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 40px 10px;
-      color: #9ca3af;
-      font-size: 14px;
-    }
-
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th {
-      text-align: left;
-      font-size: 12px;
-      color: #6b7280;
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 13px;
-    }
-
-    /* BUTTON */
-    .btn {
-      background: #15803d;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .btn:hover {
-      background: #166534;
-    }
-
-    .btn-danger {
-      background: #dc2626;
-    }
-
-    /* FORM */
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 6px;
-      color: #4b5563;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #15803d;
-    }
-
-    /* PAGE */
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    /* MOBILE */
-    @media (max-width: 900px) {
-      .sidebar {
-        width: 210px;
-      }
-
-      .main {
-        margin-left: 210px;
-        width: calc(100% - 210px);
-      }
-
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-      }
-
-      .app {
-        display: block;
-      }
-
-      .main {
-        margin-left: 0;
-        width: 100%;
-        padding: 18px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLESSIE MANAGEMENT SYSTEM</title>
+<style>
+:root{
+  --green:#16843f;--green2:#0f6d32;--green-soft:#eaf8ef;
+  --blue:#2563eb;--red:#dc2626;--orange:#d97706;
+  --ink:#172033;--muted:#718096;--bg:#f5f7fb;--card:#fff;--line:#e5e9f0;
+  --shadow:0 8px 25px rgba(20,30,50,.06);--radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#fff;border-right:1px solid var(--line);position:fixed;inset:0 auto 0 0;padding:22px 16px;z-index:20;overflow:auto}
+.brand{padding:0 10px 24px}.brand h1{font-size:22px}.brand p{font-size:12px;color:#8a94a6;margin-top:5px;letter-spacing:.5px}
+.nav-title{font-size:11px;color:#9aa3b2;text-transform:uppercase;letter-spacing:1px;margin:18px 10px 8px}
+.nav button{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:11px;color:#344054;margin:2px 0;display:flex;gap:10px;align-items:center}
+.nav button:hover{background:#f4f7f5}.nav button.active{background:var(--green-soft);color:var(--green2);font-weight:700}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:10}
+.topbar .title{font-weight:700}.topbar .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.admin{padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px}
+.content{padding:28px;max-width:1600px;margin:auto}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}.page-head h2{font-size:27px}.page-head p{color:var(--muted);font-size:13px;margin-top:5px}
+.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:700}.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green2)}.btn-light{background:#fff;border:1px solid var(--line);color:#344054}.btn-danger{background:#fee2e2;color:#b91c1c;border:0}.btn-blue{background:#dbeafe;color:#1d4ed8;border:0}
+.grid{display:grid;gap:18px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.stat-label{font-size:13px;color:#667085}.stat-value{font-size:27px;font-weight:800;margin-top:9px}.green{color:var(--green)}.blue{color:var(--blue)}.red{color:var(--red)}.orange{color:var(--orange)}
+.two{grid-template-columns:1.5fr 1fr}.three{grid-template-columns:repeat(3,1fr)}
+.section-title{font-weight:800;font-size:16px;margin-bottom:15px}
+.empty{text-align:center;color:#9aa3b2;padding:42px 15px}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.table th{color:#667085;font-size:12px;background:#fafbfc}.table tr:hover td{background:#fbfcfd}
+.badge{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700}.badge-green{background:#dcfce7;color:#15803d}.badge-red{background:#fee2e2;color:#b91c1c}.badge-orange{background:#ffedd5;color:#c2410c}.badge-blue{background:#dbeafe;color:#1d4ed8}.badge-gray{background:#eef2f7;color:#667085}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 9px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-grid.three-col{grid-template-columns:repeat(3,1fr)}
+.field label{display:block;font-size:12px;font-weight:700;color:#475467;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:10px 11px;border:1px solid #d9dee8;border-radius:9px;background:#fff;outline:none}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green)}
+.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.show{display:flex}.modal-box{background:#fff;border-radius:17px;width:min(720px,100%);max-height:90vh;overflow:auto;padding:22px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{font-size:19px}.close{border:0;background:#f1f5f9;border-radius:8px;width:34px;height:34px}
+.toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap}.search{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;min-width:240px}
+.kpi{font-size:12px;color:var(--muted)}.money{font-weight:800}
+.notice{padding:12px 14px;border-radius:10px;background:#fff7ed;color:#9a3412;font-size:12px;margin-bottom:15px}
+.mobile-toggle{display:none;border:0;background:#fff;font-size:22px}
+.chart{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:15px}.bar-wrap{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}.bar{width:100%;max-width:42px;background:var(--green);border-radius:7px 7px 2px 2px;min-height:3px}.bar-label{font-size:10px;color:#8a94a6}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quick-grid button{padding:14px 10px;border:1px solid var(--line);background:#fff;border-radius:11px;text-align:left}.quick-grid b{display:block;margin-top:5px}.small{font-size:11px;color:var(--muted)}
+.footer-note{font-size:11px;color:#98a2b3;margin-top:25px;text-align:center}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.main{margin-left:0;width:100%}.mobile-toggle{display:block}.topbar{padding:0 15px}.content{padding:18px}.stats{grid-template-columns:1fr 1fr}.form-grid,.form-grid.three-col{grid-template-columns:1fr}.search{min-width:0;width:100%}.page-head{align-items:flex-start;flex-direction:column}.modal-box{padding:17px}}
+@media(max-width:480px){.stats{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr 1fr}}
+</style>
 </head>
-
 <body>
-
 <div class="app">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <div class="logo">BLESSIE</div>
-    <div class="subtitle">MANAGEMENT SYSTEM</div>
-
-    <div class="menu">
-
-      <div class="menu-title">Utama</div>
-
-      <button class="active" onclick="showPage('dashboard', this)">
-        🏠 Dashboard
-      </button>
-
-      <div class="menu-title">Inventory</div>
-
-      <button onclick="showPage('bahan', this)">
-        📦 Bahan Baku
-      </button>
-
-      <button onclick="showPage('masuk', this)">
-        📥 Bahan Masuk
-      </button>
-
-      <button onclick="showPage('keluar', this)">
-        📤 Bahan Keluar
-      </button>
-
-      <button onclick="showPage('mutasi', this)">
-        🔄 Riwayat Stok
-      </button>
-
-      <div class="menu-title">Keuangan</div>
-
-      <button onclick="showPage('pengeluaran', this)">
-        💸 Pengeluaran
-      </button>
-
-    </div>
-
-  </aside>
-
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- DASHBOARD -->
-    <section id="dashboard" class="page active">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Dashboard</div>
-          <div class="date" id="tanggal"></div>
-        </div>
-
-        <div class="profile">
-          👤 BLESSIE ADMIN
-        </div>
-
-      </div>
-
-
-      <!-- CARDS -->
-
-      <div class="cards">
-
-        <div class="card">
-          <div class="card-label">Penjualan Hari Ini</div>
-          <div class="card-value green" id="penjualan">
-            Rp0
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-label">Pemasukan</div>
-          <div class="card-value blue" id="pemasukan">
-            Rp0
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-label">Pengeluaran</div>
-          <div class="card-value red" id="pengeluaranTotal">
-            Rp0
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-label">Jumlah Bahan</div>
-          <div class="card-value" id="jumlahBahan">
-            0
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="grid">
-
-        <div class="panel">
-
-          <div class="panel-title">
-            📈 Ringkasan Aktivitas
-          </div>
-
-          <div class="empty">
-            Belum ada transaksi.
-            <br>
-            Data aktivitas akan muncul di sini.
-          </div>
-
-        </div>
-
-
-        <div class="panel">
-
-          <div class="panel-title">
-            ⚠️ Stok Menipis
-          </div>
-
-          <div id="stokMenipis" class="empty">
-            Belum ada data bahan.
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- BAHAN -->
-    <section id="bahan" class="page">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Bahan Baku</div>
-          <div class="date">
-            Kelola seluruh bahan yang digunakan BLESSIE
-          </div>
-        </div>
-
-        <button class="btn" onclick="tambahBahan()">
-          + Tambah Bahan
-        </button>
-
-      </div>
-
-
-      <div class="panel">
-
-        <div class="panel-title">
-          📦 Daftar Bahan
-        </div>
-
-        <table>
-
-          <thead>
-            <tr>
-              <th>Nama Bahan</th>
-              <th>Kategori</th>
-              <th>Satuan</th>
-              <th>Stok</th>
-              <th>Minimum</th>
-            </tr>
-          </thead>
-
-          <tbody id="tabelBahan">
-
-            <tr>
-              <td colspan="5" class="empty">
-                Belum ada bahan.
-              </td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-
-    <!-- BAHAN MASUK -->
-    <section id="masuk" class="page">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Bahan Masuk</div>
-          <div class="date">
-            Catat pembelian bahan
-          </div>
-        </div>
-
-      </div>
-
-      <div class="panel">
-
-        <div class="panel-title">
-          📥 Tambah Bahan Masuk
-        </div>
-
-        <div class="form-group">
-
-          <label>Pilih Bahan</label>
-
-          <select id="bahanMasukSelect"></select>
-
-        </div>
-
-        <div class="form-group">
-
-          <label>Jumlah</label>
-
-          <input
-            type="number"
-            id="jumlahMasuk"
-            placeholder="Contoh: 500"
-          >
-
-        </div>
-
-        <button class="btn" onclick="bahanMasuk()">
-          Simpan Bahan Masuk
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- BAHAN KELUAR -->
-    <section id="keluar" class="page">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Bahan Keluar</div>
-          <div class="date">
-            Catat penggunaan bahan
-          </div>
-        </div>
-
-      </div>
-
-      <div class="panel">
-
-        <div class="panel-title">
-          📤 Kurangi Stok
-        </div>
-
-        <div class="form-group">
-
-          <label>Pilih Bahan</label>
-
-          <select id="bahanKeluarSelect"></select>
-
-        </div>
-
-        <div class="form-group">
-
-          <label>Jumlah</label>
-
-          <input
-            type="number"
-            id="jumlahKeluar"
-            placeholder="Contoh: 10"
-          >
-
-        </div>
-
-        <button class="btn" onclick="bahanKeluar()">
-          Simpan Bahan Keluar
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- MUTASI -->
-    <section id="mutasi" class="page">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Riwayat Stok</div>
-          <div class="date">
-            Semua perubahan stok
-          </div>
-        </div>
-
-      </div>
-
-      <div class="panel">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Tanggal</th>
-              <th>Bahan</th>
-              <th>Jenis</th>
-              <th>Jumlah</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="tabelMutasi">
-
-            <tr>
-              <td colspan="4" class="empty">
-                Belum ada mutasi stok.
-              </td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-
-    <!-- PENGELUARAN -->
-
-    <section id="pengeluaran" class="page">
-
-      <div class="topbar">
-
-        <div>
-          <div class="page-title">Pengeluaran</div>
-          <div class="date">
-            Catat biaya operasional BLESSIE
-          </div>
-        </div>
-
-        <button class="btn" onclick="catatPengeluaran()">
-          + Tambah Pengeluaran
-        </button>
-
-      </div>
-
-
-      <div class="panel">
-
-        <div class="panel-title">
-          💸 Riwayat Pengeluaran
-        </div>
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Tanggal</th>
-              <th>Keterangan</th>
-              <th>Nominal</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="tabelPengeluaran">
-
-            <tr>
-              <td colspan="3" class="empty">
-                Belum ada pengeluaran.
-              </td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-  </main>
-
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><h1>BLESSIE</h1><p>MANAGEMENT SYSTEM</p></div>
+  <div class="nav-title">Utama</div>
+  <nav class="nav">
+    <button data-page="dashboard">🏠 Dashboard</button>
+  </nav>
+  <div class="nav-title">Inventory</div>
+  <nav class="nav">
+    <button data-page="materials">📦 Bahan Baku</button>
+    <button data-page="incoming">📥 Bahan Masuk</button>
+    <button data-page="outgoing">📤 Bahan Keluar</button>
+    <button data-page="stock">🔄 Stock Opname</button>
+    <button data-page="history">📋 Riwayat Stok</button>
+  </nav>
+  <div class="nav-title">Penjualan</div>
+  <nav class="nav">
+    <button data-page="sales">🛒 Penjualan</button>
+    <button data-page="products">🏷️ Produk & Jasa</button>
+  </nav>
+  <div class="nav-title">Keuangan</div>
+  <nav class="nav">
+    <button data-page="expenses">💸 Pengeluaran</button>
+    <button data-page="reports">📊 Laporan</button>
+  </nav>
+  <div class="nav-title">Sistem</div>
+  <nav class="nav">
+    <button data-page="settings">⚙️ Pengaturan</button>
+  </nav>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="mobile-toggle" id="mobileToggle">☰</button>
+    <div><div class="title" id="topTitle">Dashboard</div><div class="sub" id="todayText"></div></div>
+  </div>
+  <button class="admin">👤 BLESSIE ADMIN</button>
+</header>
+<div class="content" id="content"></div>
+</main>
 </div>
 
+<div class="modal" id="modal">
+  <div class="modal-box" id="modalBox"></div>
+</div>
 
 <script>
-
-  /* =========================
-     DATA
-  ========================= */
-
-  let bahan =
-    JSON.parse(localStorage.getItem("blessie_bahan")) || [];
-
-  let mutasi =
-    JSON.parse(localStorage.getItem("blessie_mutasi")) || [];
-
-  let pengeluaran =
-    JSON.parse(localStorage.getItem("blessie_pengeluaran")) || [];
-
-
-  /* =========================
-     FORMAT RUPIAH
-  ========================= */
-
-  function rupiah(angka) {
-
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      maximumFractionDigits: 0
-    }).format(angka);
-
-  }
-
-
-  /* =========================
-     NAVIGATION
-  ========================= */
-
-  function showPage(page, button) {
-
-    document
-      .querySelectorAll(".page")
-      .forEach(p => p.classList.remove("active"));
-
-    document
-      .getElementById(page)
-      .classList.add("active");
-
-    document
-      .querySelectorAll(".menu button")
-      .forEach(b => b.classList.remove("active"));
-
-    button.classList.add("active");
-
-    refresh();
-
-  }
-
-
-  /* =========================
-     TAMBAH BAHAN
-  ========================= */
-
-  function tambahBahan() {
-
-    let nama = prompt("Nama bahan:");
-
-    if (!nama) return;
-
-    let kategori = prompt("Kategori:");
-
-    let satuan = prompt(
-      "Satuan (lembar / pcs / ml / meter):"
-    );
-
-    let stok = Number(
-      prompt("Stok awal:")
-    );
-
-    let minimum = Number(
-      prompt("Stok minimum:")
-    );
-
-    bahan.push({
-
-      id: Date.now(),
-
-      nama: nama,
-
-      kategori: kategori || "-",
-
-      satuan: satuan || "pcs",
-
-      stok: stok || 0,
-
-      minimum: minimum || 0
-
-    });
-
-    save();
-
-    refresh();
-
-    alert("Bahan berhasil ditambahkan.");
-
-  }
-
-
-  /* =========================
-     BAHAN MASUK
-  ========================= */
-
-  function bahanMasuk() {
-
-    let id =
-      Number(
-        document.getElementById(
-          "bahanMasukSelect"
-        ).value
-      );
-
-    let jumlah =
-      Number(
-        document.getElementById(
-          "jumlahMasuk"
-        ).value
-      );
-
-    let item =
-      bahan.find(b => b.id === id);
-
-    if (!item || jumlah <= 0) {
-
-      alert("Data belum lengkap.");
-
-      return;
-
-    }
-
-    item.stok += jumlah;
-
-    mutasi.push({
-
-      tanggal: new Date().toLocaleString("id-ID"),
-
-      bahan: item.nama,
-
-      jenis: "Bahan Masuk",
-
-      jumlah: "+" + jumlah
-
-    });
-
-    save();
-
-    refresh();
-
-    document.getElementById(
-      "jumlahMasuk"
-    ).value = "";
-
-    alert("Stok berhasil ditambahkan.");
-
-  }
-
-
-  /* =========================
-     BAHAN KELUAR
-  ========================= */
-
-  function bahanKeluar() {
-
-    let id =
-      Number(
-        document.getElementById(
-          "bahanKeluarSelect"
-        ).value
-      );
-
-    let jumlah =
-      Number(
-        document.getElementById(
-          "jumlahKeluar"
-        ).value
-      );
-
-    let item =
-      bahan.find(b => b.id === id);
-
-    if (!item || jumlah <= 0) {
-
-      alert("Data belum lengkap.");
-
-      return;
-
-    }
-
-    if (jumlah > item.stok) {
-
-      alert("Stok tidak mencukupi.");
-
-      return;
-
-    }
-
-    item.stok -= jumlah;
-
-    mutasi.push({
-
-      tanggal: new Date().toLocaleString("id-ID"),
-
-      bahan: item.nama,
-
-      jenis: "Bahan Keluar",
-
-      jumlah: "-" + jumlah
-
-    });
-
-    save();
-
-    refresh();
-
-    document.getElementById(
-      "jumlahKeluar"
-    ).value = "";
-
-    alert("Stok berhasil dikurangi.");
-
-  }
-
-
-  /* =========================
-     PENGELUARAN
-  ========================= */
-
-  function catatPengeluaran() {
-
-    let keterangan =
-      prompt("Keterangan pengeluaran:");
-
-    if (!keterangan) return;
-
-    let nominal =
-      Number(
-        prompt("Nominal (contoh: 50000):")
-      );
-
-    if (!nominal || nominal <= 0) return;
-
-    pengeluaran.push({
-
-      tanggal: new Date().toLocaleString("id-ID"),
-
-      keterangan: keterangan,
-
-      nominal: nominal
-
-    });
-
-    save();
-
-    refresh();
-
-    alert("Pengeluaran berhasil dicatat.");
-
-  }
-
-
-  /* =========================
-     SAVE
-  ========================= */
-
-  function save() {
-
-    localStorage.setItem(
-      "blessie_bahan",
-      JSON.stringify(bahan)
-    );
-
-    localStorage.setItem(
-      "blessie_mutasi",
-      JSON.stringify(mutasi)
-    );
-
-    localStorage.setItem(
-      "blessie_pengeluaran",
-      JSON.stringify(pengeluaran)
-    );
-
-  }
-
-
-  /* =========================
-     REFRESH
-  ========================= */
-
-  function refresh() {
-
-    document.getElementById(
-      "jumlahBahan"
-    ).innerText = bahan.length;
-
-
-    /* TABEL BAHAN */
-
-    let tabel =
-      document.getElementById(
-        "tabelBahan"
-      );
-
-    if (bahan.length === 0) {
-
-      tabel.innerHTML = `
-        <tr>
-          <td colspan="5" class="empty">
-            Belum ada bahan.
-          </td>
-        </tr>
-      `;
-
-    } else {
-
-      tabel.innerHTML =
-        bahan.map(b => `
-
-          <tr>
-
-            <td>${b.nama}</td>
-
-            <td>${b.kategori}</td>
-
-            <td>${b.satuan}</td>
-
-            <td>
-              <strong>${b.stok}</strong>
-            </td>
-
-            <td>${b.minimum}</td>
-
-          </tr>
-
-        `).join("");
-
-    }
-
-
-    /* SELECT */
-
-    let options =
-      bahan.map(b => `
-        <option value="${b.id}">
-          ${b.nama} — Stok ${b.stok} ${b.satuan}
-        </option>
-      `).join("");
-
-    document.getElementById(
-      "bahanMasukSelect"
-    ).innerHTML =
-      options ||
-      `<option value="">Belum ada bahan</option>`;
-
-    document.getElementById(
-      "bahanKeluarSelect"
-    ).innerHTML =
-      options ||
-      `<option value="">Belum ada bahan</option>`;
-
-
-    /* MUTASI */
-
-    let tabelMutasi =
-      document.getElementById(
-        "tabelMutasi"
-      );
-
-    if (mutasi.length === 0) {
-
-      tabelMutasi.innerHTML = `
-        <tr>
-          <td colspan="4" class="empty">
-            Belum ada mutasi stok.
-          </td>
-        </tr>
-      `;
-
-    } else {
-
-      tabelMutasi.innerHTML =
-        [...mutasi]
-        .reverse()
-        .map(m => `
-
-          <tr>
-
-            <td>${m.tanggal}</td>
-
-            <td>${m.bahan}</td>
-
-            <td>${m.jenis}</td>
-
-            <td>${m.jumlah}</td>
-
-          </tr>
-
-        `).join("");
-
-    }
-
-
-    /* PENGELUARAN */
-
-    let tabelPengeluaran =
-      document.getElementById(
-        "tabelPengeluaran"
-      );
-
-    if (pengeluaran.length === 0) {
-
-      tabelPengeluaran.innerHTML = `
-        <tr>
-          <td colspan="3" class="empty">
-            Belum ada pengeluaran.
-          </td>
-        </tr>
-      `;
-
-    } else {
-
-      tabelPengeluaran.innerHTML =
-        [...pengeluaran]
-        .reverse()
-        .map(p => `
-
-          <tr>
-
-            <td>${p.tanggal}</td>
-
-            <td>${p.keterangan}</td>
-
-            <td>${rupiah(p.nominal)}</td>
-
-          </tr>
-
-        `).join("");
-
-    }
-
-
-    /* TOTAL PENGELUARAN */
-
-    let total =
-      pengeluaran.reduce(
-        (sum, p) => sum + p.nominal,
-        0
-      );
-
-    document.getElementById(
-      "pengeluaranTotal"
-    ).innerText =
-      rupiah(total);
-
-
-    /* STOK MENIPIS */
-
-    let menipis =
-      bahan.filter(
-        b => b.stok <= b.minimum
-      );
-
-    let stokBox =
-      document.getElementById(
-        "stokMenipis"
-      );
-
-    if (menipis.length === 0) {
-
-      stokBox.innerHTML =
-        "Tidak ada stok yang menipis.";
-
-    } else {
-
-      stokBox.innerHTML =
-        menipis.map(b => `
-          <div style="
-            padding:10px;
-            border-bottom:1px solid #eee;
-          ">
-            <strong>${b.nama}</strong>
-            <br>
-            <small>
-              Sisa ${b.stok} ${b.satuan}
-            </small>
-          </div>
-        `).join("");
-
-    }
-
-  }
-
-
-  /* =========================
-     TANGGAL
-  ========================= */
-
-  document.getElementById(
-    "tanggal"
-  ).innerText =
-    new Date().toLocaleDateString(
-      "id-ID",
-      {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      }
-    );
-
-
-  refresh();
-
+const KEY='blessie_management_v2';
+const defaultState={
+  materials:[],
+  incoming:[],
+  outgoing:[],
+  stockOpname:[],
+  sales:[],
+  products:[],
+  expenses:[],
+  settings:{businessName:'BLESSIE PRINTING',lowStockDefault:5}
+};
+let state=loadState();
+let currentPage='dashboard';
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw) return structuredClone(defaultState);
+    const x=JSON.parse(raw);
+    return {...structuredClone(defaultState),...x};
+  }catch(e){return structuredClone(defaultState)}
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function money(n){return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0)}
+function num(n){return Number(n)||0}
+function dateID(d){return new Date(d).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}
+function nowDate(){return new Date().toISOString().slice(0,10)}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function materialStock(m){
+  const masuk=state.incoming.filter(x=>x.materialId===m.id).reduce((a,x)=>a+num(x.qty),0);
+  const keluar=state.outgoing.filter(x=>x.materialId===m.id).reduce((a,x)=>a+num(x.qty),0);
+  const opname=state.stockOpname.filter(x=>x.materialId===m.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+  const base=num(m.initialStock);
+  let stock=base+masuk-keluar;
+  if(opname) stock=num(opname.actualStock)+(state.incoming.filter(x=>x.materialId===m.id && new Date(x.date)>new Date(opname.date)).reduce((a,x)=>a+num(x.qty),0))-state.outgoing.filter(x=>x.materialId===m.id && new Date(x.date)>new Date(opname.date)).reduce((a,x)=>a+num(x.qty),0);
+  return stock;
+}
+function allRevenue(){return state.sales.reduce((a,x)=>a+num(x.total),0)}
+function allExpenses(){return state.expenses.reduce((a,x)=>a+num(x.amount),0)}
+function todayRevenue(){const d=nowDate();return state.sales.filter(x=>x.date===d).reduce((a,x)=>a+num(x.total),0)}
+function todayExpenses(){const d=nowDate();return state.expenses.filter(x=>x.date===d).reduce((a,x)=>a+num(x.amount),0)}
+function pageTitle(p){
+ const map={dashboard:'Dashboard',materials:'Bahan Baku',incoming:'Bahan Masuk',outgoing:'Bahan Keluar',stock:'Stock Opname',history:'Riwayat Stok',sales:'Penjualan',products:'Produk & Jasa',expenses:'Pengeluaran',reports:'Laporan',settings:'Pengaturan'};
+ return map[p]||'Dashboard';
+}
+function render(){
+ document.getElementById('topTitle').textContent=pageTitle(currentPage);
+ document.getElementById('todayText').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));
+ const fn=pages[currentPage]||pages.dashboard;
+ document.getElementById('content').innerHTML=fn();
+ if(currentPage==='dashboard') drawDashboardChart();
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{currentPage=b.dataset.page;render();document.getElementById('sidebar').classList.remove('open')}));
+document.getElementById('mobileToggle').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+
+const pages={
+dashboard:()=>`
+<div class="page-head"><div><h2>Dashboard</h2><p>Ringkasan aktivitas BLESSIE PRINTING.</p></div></div>
+<div class="grid stats">
+ <div class="card"><div class="stat-label">Penjualan Hari Ini</div><div class="stat-value green">${money(todayRevenue())}</div></div>
+ <div class="card"><div class="stat-label">Total Pemasukan</div><div class="stat-value blue">${money(allRevenue())}</div></div>
+ <div class="card"><div class="stat-label">Total Pengeluaran</div><div class="stat-value red">${money(allExpenses())}</div></div>
+ <div class="card"><div class="stat-label">Jumlah Bahan</div><div class="stat-value">${state.materials.length}</div></div>
+</div>
+<div class="grid quick-grid" style="margin-bottom:18px">
+ <button onclick="openMaterialModal()">➕ <b>Tambah Bahan</b><span class="small">Input bahan baru</span></button>
+ <button onclick="openSaleModal()">🛒 <b>Catat Penjualan</b><span class="small">Penjualan produk/jasa</span></button>
+ <button onclick="openIncomingModal()">📥 <b>Bahan Masuk</b><span class="small">Tambah stok</span></button>
+ <button onclick="openExpenseModal()">💸 <b>Pengeluaran</b><span class="small">Catat biaya</span></button>
+</div>
+<div class="grid two">
+ <div class="card"><div class="section-title">📈 Penjualan 7 Hari Terakhir</div><div id="salesChart" class="chart"></div></div>
+ <div class="card"><div class="section-title">⚠️ Stok Menipis</div>${lowStockHTML()}</div>
+</div>
+<div class="card" style="margin-top:18px"><div class="section-title">📋 Aktivitas Terbaru</div>${activityHTML()}</div>
+`,
+
+materials:()=>`
+<div class="page-head"><div><h2>Bahan Baku</h2><p>Kelola seluruh bahan yang digunakan BLESSIE.</p></div><button class="btn btn-primary" onclick="openMaterialModal()">+ Tambah Bahan</button></div>
+<div class="card"><div class="toolbar"><div class="section-title">📦 Daftar Bahan</div><input class="search" placeholder="Cari nama/kategori..." oninput="filterTable(this.value,'materialsTable')"></div>
+<div class="table-wrap"><table class="table" id="materialsTable"><thead><tr><th>Nama Bahan</th><th>Kategori</th><th>Satuan</th><th>Stok</th><th>Minimum</th><th>Harga Beli</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${materialsRows()}</tbody></table></div></div>
+`,
+incoming:()=>`
+<div class="page-head"><div><h2>Bahan Masuk</h2><p>Catat pembelian atau penambahan stok bahan.</p></div><button class="btn btn-primary" onclick="openIncomingModal()">+ Bahan Masuk</button></div>
+<div class="card"><div class="toolbar"><div class="section-title">📥 Riwayat Bahan Masuk</div><input class="search" placeholder="Cari..." oninput="filterTable(this.value,'incomingTable')"></div>
+<div class="table-wrap"><table class="table" id="incomingTable"><thead><tr><th>Tanggal</th><th>Bahan</th><th>Qty</th><th>Harga/Unit</th><th>Total</th><th>Supplier</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody>${incomingRows()}</tbody></table></div></div>
+`,
+outgoing:()=>`
+<div class="page-head"><div><h2>Bahan Keluar</h2><p>Catat pemakaian bahan untuk produksi atau kebutuhan lain.</p></div><button class="btn btn-primary" onclick="openOutgoingModal()">+ Bahan Keluar</button></div>
+<div class="card"><div class="toolbar"><div class="section-title">📤 Riwayat Bahan Keluar</div><input class="search" placeholder="Cari..." oninput="filterTable(this.value,'outgoingTable')"></div>
+<div class="table-wrap"><table class="table" id="outgoingTable"><thead><tr><th>Tanggal</th><th>Bahan</th><th>Qty</th><th>Tujuan</th><th>Keterangan</th><th>Aksi</th></tr></thead><tbody>${outgoingRows()}</tbody></table></div></div>
+`,
+stock:()=>`
+<div class="page-head"><div><h2>Stock Opname</h2><p>Bandingkan stok sistem dengan stok fisik.</p></div><button class="btn btn-primary" onclick="openOpnameModal()">+ Stock Opname</button></div>
+<div class="notice">💡 Stock opname dipakai saat stok fisik berbeda dari stok sistem. Setelah disimpan, perhitungan stok akan memakai jumlah fisik tersebut mulai dari tanggal opname.</div>
+<div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Tanggal</th><th>Bahan</th><th>Stok Sistem</th><th>Stok Fisik</th><th>Selisih</th><th>Catatan</th></tr></thead><tbody>${opnameRows()}</tbody></table></div></div>
+`,
+history:()=>`
+<div class="page-head"><div><h2>Riwayat Stok</h2><p>Semua pergerakan stok bahan.</p></div></div>
+<div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Tanggal</th><th>Jenis</th><th>Bahan</th><th>Qty</th><th>Referensi</th><th>Keterangan</th></tr></thead><tbody>${historyRows()}</tbody></table></div></div>
+`,
+sales:()=>`
+<div class="page-head"><div><h2>Penjualan</h2><p>Catat penjualan produk dan jasa BLESSIE.</p></div><button class="btn btn-primary" onclick="openSaleModal()">+ Penjualan Baru</button></div>
+<div class="grid stats">
+ <div class="card"><div class="stat-label">Omzet</div><div class="stat-value blue">${money(allRevenue())}</div></div>
+ <div class="card"><div class="stat-label">Transaksi</div><div class="stat-value">${state.sales.length}</div></div>
+ <div class="card"><div class="stat-label">Rata-rata Transaksi</div><div class="stat-value green">${money(state.sales.length?allRevenue()/state.sales.length:0)}</div></div>
+ <div class="card"><div class="stat-label">Omzet Hari Ini</div><div class="stat-value green">${money(todayRevenue())}</div></div>
+</div>
+<div class="card"><div class="toolbar"><div class="section-title">🛒 Daftar Penjualan</div><input class="search" placeholder="Cari pelanggan/produk..." oninput="filterTable(this.value,'salesTable')"></div>
+<div class="table-wrap"><table class="table" id="salesTable"><thead><tr><th>Tanggal</th><th>No. Transaksi</th><th>Pelanggan</th><th>Item</th><th>Qty</th><th>Total</th><th>Metode</th><th>Aksi</th></tr></thead><tbody>${salesRows()}</tbody></table></div></div>
+`,
+products:()=>`
+<div class="page-head"><div><h2>Produk & Jasa</h2><p>Master data produk/jasa yang dijual.</p></div><button class="btn btn-primary" onclick="openProductModal()">+ Tambah Produk</button></div>
+<div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Nama</th><th>Kategori</th><th>Satuan</th><th>Harga Jual</th><th>Modal/HPP</th><th>Margin</th><th>Aksi</th></tr></thead><tbody>${productRows()}</tbody></table></div></div>
+`,
+expenses:()=>`
+<div class="page-head"><div><h2>Pengeluaran</h2><p>Catat biaya operasional, bahan, listrik, internet, dan lainnya.</p></div><button class="btn btn-primary" onclick="openExpenseModal()">+ Pengeluaran</button></div>
+<div class="grid stats">
+ <div class="card"><div class="stat-label">Total Pengeluaran</div><div class="stat-value red">${money(allExpenses())}</div></div>
+ <div class="card"><div class="stat-label">Pengeluaran Hari Ini</div><div class="stat-value red">${money(todayExpenses())}</div></div>
+ <div class="card"><div class="stat-label">Jumlah Transaksi</div><div class="stat-value">${state.expenses.length}</div></div>
+ <div class="card"><div class="stat-label">Laba Sederhana</div><div class="stat-value green">${money(allRevenue()-allExpenses())}</div></div>
+</div>
+<div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Tanggal</th><th>Kategori</th><th>Deskripsi</th><th>Nominal</th><th>Metode</th><th>Aksi</th></tr></thead><tbody>${expenseRows()}</tbody></table></div></div>
+`,
+reports:()=>`
+<div class="page-head"><div><h2>Laporan</h2><p>Ringkasan keuangan dan inventory BLESSIE.</p></div><button class="btn btn-light" onclick="exportCSV()">⬇ Export CSV</button></div>
+<div class="grid three">
+ <div class="card"><div class="section-title">💰 Ringkasan Keuangan</div><p class="kpi">Total Penjualan</p><div class="stat-value blue">${money(allRevenue())}</div><p class="kpi" style="margin-top:12px">Total Pengeluaran</p><div class="stat-value red">${money(allExpenses())}</div><p class="kpi" style="margin-top:12px">Laba Sederhana</p><div class="stat-value green">${money(allRevenue()-allExpenses())}</div></div>
+ <div class="card"><div class="section-title">📦 Inventory</div><p class="kpi">Jenis Bahan</p><div class="stat-value">${state.materials.length}</div><p class="kpi" style="margin-top:12px">Bahan Menipis</p><div class="stat-value orange">${lowStockCount()}</div><p class="kpi" style="margin-top:12px">Nilai Stok</p><div class="stat-value blue">${money(stockValue())}</div></div>
+ <div class="card"><div class="section-title">🧾 Transaksi</div><p class="kpi">Penjualan</p><div class="stat-value">${state.sales.length}</div><p class="kpi" style="margin-top:12px">Bahan Masuk</p><div class="stat-value">${state.incoming.length}</div><p class="kpi" style="margin-top:12px">Bahan Keluar</p><div class="stat-value">${state.outgoing.length}</div></div>
+</div>
+<div class="card" style="margin-top:18px"><div class="section-title">📊 Penjualan 7 Hari</div><div id="reportChart" class="chart"></div></div>
+`,
+settings:()=>`
+<div class="page-head"><div><h2>Pengaturan</h2><p>Pengaturan dasar aplikasi dan backup data.</p></div></div>
+<div class="grid two">
+ <div class="card"><div class="section-title">🏪 Identitas Usaha</div>
+  <div class="form-grid">
+   <div class="field"><label>Nama Usaha</label><input id="setBusiness" value="${esc(state.settings.businessName)}"></div>
+   <div class="field"><label>Minimum Stok Default</label><input id="setMin" type="number" value="${num(state.settings.lowStockDefault)}"></div>
+  </div>
+  <div class="form-actions"><button class="btn btn-primary" onclick="saveSettings()">Simpan Pengaturan</button></div>
+ </div>
+ <div class="card"><div class="section-title">💾 Backup & Restore</div>
+  <p class="small" style="margin-bottom:12px">Data aplikasi saat ini tersimpan di browser (localStorage). Gunakan backup secara berkala agar data tidak hilang.</p>
+  <div class="actions"><button class="btn btn-blue" onclick="backupData()">⬇ Backup JSON</button><label class="btn btn-light">⬆ Restore JSON<input id="restoreInput" type="file" accept=".json" style="display:none" onchange="restoreData(this)"></label><button class="btn btn-danger" onclick="resetData()">Reset Semua Data</button></div>
+ </div>
+</div>
+<div class="card" style="margin-top:18px"><div class="section-title">ℹ️ Informasi</div><p class="small">Versi BLESSIE Management v2. Data belum menggunakan database online. Untuk penggunaan multi-perangkat/multi-user, aplikasi perlu dihubungkan ke backend/database seperti Supabase atau Firebase.</p></div>
+`
+};
+
+function materialsRows(){
+ if(!state.materials.length)return `<tr><td colspan="8" class="empty">Belum ada bahan. Klik "+ Tambah Bahan" untuk mulai.</td></tr>`;
+ return state.materials.map(m=>{
+  const s=materialStock(m), min=num(m.minStock)||num(state.settings.lowStockDefault);
+  const status=s<=0?'<span class="badge badge-red">Habis</span>':s<=min?'<span class="badge badge-orange">Menipis</span>':'<span class="badge badge-green">Aman</span>';
+  return `<tr><td><b>${esc(m.name)}</b><div class="small">${esc(m.code||'')}</div></td><td>${esc(m.category)}</td><td>${esc(m.unit)}</td><td><b>${s}</b></td><td>${min}</td><td>${money(m.buyPrice)}</td><td>${status}</td><td><div class="actions"><button class="icon-btn" onclick="editMaterial('${m.id}')">✏️</button><button class="icon-btn" onclick="deleteItem('materials','${m.id}')">🗑️</button></div></td></tr>`;
+ }).join('');
+}
+function incomingRows(){
+ if(!state.incoming.length)return `<tr><td colspan="8" class="empty">Belum ada bahan masuk.</td></tr>`;
+ return [...state.incoming].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>{
+  const m=state.materials.find(y=>y.id===x.materialId);
+  return `<tr><td>${dateID(x.date)}</td><td>${esc(m?.name||'Bahan dihapus')}</td><td>${x.qty} ${esc(m?.unit||'')}</td><td>${money(x.unitPrice)}</td><td class="money">${money(x.qty*x.unitPrice)}</td><td>${esc(x.supplier||'-')}</td><td>${esc(x.note||'-')}</td><td><button class="icon-btn" onclick="deleteItem('incoming','${x.id}')">🗑️</button></td></tr>`;
+ }).join('');
+}
+function outgoingRows(){
+ if(!state.outgoing.length)return `<tr><td colspan="6" class="empty">Belum ada bahan keluar.</td></tr>`;
+ return [...state.outgoing].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>{
+  const m=state.materials.find(y=>y.id===x.materialId);
+  return `<tr><td>${dateID(x.date)}</td><td>${esc(m?.name||'Bahan dihapus')}</td><td>${x.qty} ${esc(m?.unit||'')}</td><td>${esc(x.destination||'-')}</td><td>${esc(x.note||'-')}</td><td><button class="icon-btn" onclick="deleteItem('outgoing','${x.id}')">🗑️</button></td></tr>`;
+ }).join('');
+}
+function opnameRows(){
+ if(!state.stockOpname.length)return `<tr><td colspan="6" class="empty">Belum ada stock opname.</td></tr>`;
+ return [...state.stockOpname].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>{
+  const m=state.materials.find(y=>y.id===x.materialId); const diff=num(x.actualStock)-num(x.systemStock);
+  return `<tr><td>${dateID(x.date)}</td><td>${esc(m?.name||'-')}</td><td>${x.systemStock}</td><td>${x.actualStock}</td><td><span class="badge ${diff<0?'badge-red':diff>0?'badge-green':'badge-gray'}">${diff>0?'+':''}${diff}</span></td><td>${esc(x.note||'-')}</td></tr>`;
+ }).join('');
+}
+function historyRows(){
+ const arr=[];
+ state.incoming.forEach(x=>arr.push({date:x.date,type:'Bahan Masuk',materialId:x.materialId,qty:x.qty,ref:x.supplier,note:x.note}));
+ state.outgoing.forEach(x=>arr.push({date:x.date,type:'Bahan Keluar',materialId:x.materialId,qty:-num(x.qty),ref:x.destination,note:x.note}));
+ state.stockOpname.forEach(x=>arr.push({date:x.date,type:'Stock Opname',materialId:x.materialId,qty:x.actualStock,ref:'Fisik',note:x.note}));
+ if(!arr.length)return `<tr><td colspan="6" class="empty">Belum ada pergerakan stok.</td></tr>`;
+ return arr.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>{const m=state.materials.find(y=>y.id===x.materialId);return `<tr><td>${dateID(x.date)}</td><td>${x.type}</td><td>${esc(m?.name||'-')}</td><td>${x.qty} ${esc(m?.unit||'')}</td><td>${esc(x.ref||'-')}</td><td>${esc(x.note||'-')}</td></tr>`}).join('');
+}
+function salesRows(){
+ if(!state.sales.length)return `<tr><td colspan="8" class="empty">Belum ada penjualan.</td></tr>`;
+ return [...state.sales].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>`<tr><td>${dateID(x.date)}</td><td>${esc(x.invoice)}</td><td>${esc(x.customer||'Umum')}</td><td>${esc(x.item)}</td><td>${x.qty}</td><td class="money">${money(x.total)}</td><td>${esc(x.method)}</td><td><button class="icon-btn" onclick="deleteItem('sales','${x.id}')">🗑️</button></td></tr>`).join('');
+}
+function productRows(){
+ if(!state.products.length)return `<tr><td colspan="7" class="empty">Belum ada produk/jasa.</td></tr>`;
+ return state.products.map(p=>{const margin=num(p.sellPrice)-num(p.cost);return `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.category)}</td><td>${esc(p.unit)}</td><td>${money(p.sellPrice)}</td><td>${money(p.cost)}</td><td><span class="badge ${margin>=0?'badge-green':'badge-red'}">${money(margin)}</span></td><td><button class="icon-btn" onclick="editProduct('${p.id}')">✏️</button> <button class="icon-btn" onclick="deleteItem('products','${p.id}')">🗑️</button></td></tr>`}).join('');
+}
+function expenseRows(){
+ if(!state.expenses.length)return `<tr><td colspan="6" class="empty">Belum ada pengeluaran.</td></tr>`;
+ return [...state.expenses].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>`<tr><td>${dateID(x.date)}</td><td>${esc(x.category)}</td><td>${esc(x.description)}</td><td class="money">${money(x.amount)}</td><td>${esc(x.method)}</td><td><button class="icon-btn" onclick="deleteItem('expenses','${x.id}')">🗑️</button></td></tr>`).join('');
+}
+function lowStockCount(){return state.materials.filter(m=>materialStock(m)<= (num(m.minStock)||num(state.settings.lowStockDefault))).length}
+function lowStockHTML(){
+ const a=state.materials.filter(m=>materialStock(m)<= (num(m.minStock)||num(state.settings.lowStockDefault)));
+ if(!a.length)return `<div class="empty">Tidak ada stok yang menipis.</div>`;
+ return a.map(m=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span><b>${esc(m.name)}</b><div class="small">${esc(m.category)}</div></span><span class="badge badge-orange">${materialStock(m)} ${esc(m.unit)}</span></div>`).join('');
+}
+function activityHTML(){
+ const arr=[];
+ state.sales.forEach(x=>arr.push({date:x.date,txt:`Penjualan ${x.invoice}`,amount:money(x.total),type:'green'}));
+ state.incoming.forEach(x=>{const m=state.materials.find(y=>y.id===x.materialId);arr.push({date:x.date,txt:`Bahan masuk: ${m?.name||'-'}`,amount:`+${x.qty}`,type:'blue'})});
+ state.expenses.forEach(x=>arr.push({date:x.date,txt:`Pengeluaran: ${x.description}`,amount:money(x.amount),type:'red'}));
+ if(!arr.length)return `<div class="empty">Belum ada transaksi. Data aktivitas akan muncul di sini.</div>`;
+ return arr.sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,8).map(x=>`<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)"><span><b>${esc(x.txt)}</b><div class="small">${dateID(x.date)}</div></span><span class="${x.type}">${esc(x.amount)}</span></div>`).join('');
+}
+function stockValue(){return state.materials.reduce((a,m)=>a+materialStock(m)*num(m.buyPrice),0)}
+function drawDashboardChart(){
+ const el=document.getElementById('salesChart'); if(!el)return;
+ const data=last7();const max=Math.max(...data.map(x=>x.value),1);
+ el.innerHTML=data.map(x=>`<div class="bar-wrap"><div class="small">${money(x.value).replace('Rp','').trim()}</div><div class="bar" style="height:${Math.max(4,x.value/max*135)}px"></div><div class="bar-label">${x.label}</div></div>`).join('');
+}
+function drawReportChart(){
+ const el=document.getElementById('reportChart');if(!el)return;const data=last7();const max=Math.max(...data.map(x=>x.value),1);
+ el.innerHTML=data.map(x=>`<div class="bar-wrap"><div class="small">${money(x.value).replace('Rp','').trim()}</div><div class="bar" style="height:${Math.max(4,x.value/max*135)}px"></div><div class="bar-label">${x.label}</div></div>`).join('');
+}
+function last7(){
+ const out=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);out.push({label:d.toLocaleDateString('id-ID',{day:'2-digit',month:'short'}),value:state.sales.filter(x=>x.date===ds).reduce((a,x)=>a+num(x.total),0)})}return out;
+}
+
+function modal(title,body){
+ document.getElementById('modalBox').innerHTML=`<div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">✕</button></div>${body}`;
+ document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+function openMaterialModal(editId=null){
+ const m=state.materials.find(x=>x.id===editId)||{};
+ modal(editId?'Edit Bahan':'Tambah Bahan',`
+ <div class="form-grid">
+  <div class="field"><label>Nama Bahan *</label><input id="mName" value="${esc(m.name)}" placeholder="Contoh: HVS 75 GSM"></div>
+  <div class="field"><label>Kode Bahan</label><input id="mCode" value="${esc(m.code)}" placeholder="HVS75"></div>
+  <div class="field"><label>Kategori *</label><select id="mCat"><option ${m.category==='Kertas'?'selected':''}>Kertas</option><option ${m.category==='Tinta'?'selected':''}>Tinta</option><option ${m.category==='Plastik'?'selected':''}>Plastik</option><option ${m.category==='Aksesoris'?'selected':''}>Aksesoris</option><option ${m.category==='Kemasan'?'selected':''}>Kemasan</option><option ${m.category==='Lainnya'?'selected':''}>Lainnya</option></select></div>
+  <div class="field"><label>Satuan *</label><input id="mUnit" value="${esc(m.unit||'pcs')}" placeholder="pcs, lembar, meter, botol"></div>
+  <div class="field"><label>Stok Awal</label><input id="mInitial" type="number" min="0" value="${num(m.initialStock)}"></div>
+  <div class="field"><label>Minimum Stok</label><input id="mMin" type="number" min="0" value="${num(m.minStock)||num(state.settings.lowStockDefault)}"></div>
+  <div class="field"><label>Harga Beli / Satuan</label><input id="mBuy" type="number" min="0" value="${num(m.buyPrice)}"></div>
+  <div class="field"><label>Supplier</label><input id="mSupplier" value="${esc(m.supplier)}"></div>
+ </div>
+ <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveMaterial('${editId||''}')">Simpan Bahan</button></div>`);
+}
+function saveMaterial(editId){
+ const name=document.getElementById('mName').value.trim();if(!name)return alert('Nama bahan wajib diisi.');
+ const data={id:editId||id(),name,code:document.getElementById('mCode').value.trim(),category:document.getElementById('mCat').value,unit:document.getElementById('mUnit').value.trim()||'pcs',initialStock:num(document.getElementById('mInitial').value),minStock:num(document.getElementById('mMin').value),buyPrice:num(document.getElementById('mBuy').value),supplier:document.getElementById('mSupplier').value.trim()};
+ if(editId){const i=state.materials.findIndex(x=>x.id===editId);state.materials[i]=data}else state.materials.push(data);save();closeModal();render();
+}
+function editMaterial(id){openMaterialModal(id)}
+
+function openIncomingModal(){
+ modal('Bahan Masuk',`<div class="form-grid">
+ <div class="field"><label>Tanggal *</label><input id="iDate" type="date" value="${nowDate()}"></div>
+ <div class="field"><label>Bahan *</label><select id="iMat">${materialOptions()}</select></div>
+ <div class="field"><label>Jumlah *</label><input id="iQty" type="number" min="0.01" step="any"></div>
+ <div class="field"><label>Harga Beli / Unit</label><input id="iPrice" type="number" min="0"></div>
+ <div class="field"><label>Supplier</label><input id="iSupplier"></div>
+ <div class="field"><label>No. Nota / Referensi</label><input id="iRef"></div>
+ <div class="field" style="grid-column:1/-1"><label>Catatan</label><textarea id="iNote"></textarea></div>
+ </div><div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveIncoming()">Simpan</button></div>`);
+}
+function saveIncoming(){
+ const materialId=document.getElementById('iMat').value,qty=num(document.getElementById('iQty').value);if(!materialId||qty<=0)return alert('Pilih bahan dan jumlah yang benar.');
+ state.incoming.push({id:id(),date:document.getElementById('iDate').value,materialId,qty,unitPrice:num(document.getElementById('iPrice').value),supplier:document.getElementById('iSupplier').value.trim(),ref:document.getElementById('iRef').value.trim(),note:document.getElementById('iNote').value.trim()});save();closeModal();render();
+}
+function openOutgoingModal(){
+ modal('Bahan Keluar',`<div class="form-grid">
+ <div class="field"><label>Tanggal *</label><input id="oDate" type="date" value="${nowDate()}"></div>
+ <div class="field"><label>Bahan *</label><select id="oMat">${materialOptions()}</select></div>
+ <div class="field"><label>Jumlah *</label><input id="oQty" type="number" min="0.01" step="any"></div>
+ <div class="field"><label>Tujuan</label><select id="oDest"><option>Produksi</option><option>Pemakaian Internal</option><option>Rusak/Hilang</option><option>Lainnya</option></select></div>
+ <div class="field" style="grid-column:1/-1"><label>Keterangan</label><textarea id="oNote"></textarea></div>
+ </div><div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveOutgoing()">Simpan</button></div>`);
+}
+function saveOutgoing(){
+ const materialId=document.getElementById('oMat').value,qty=num(document.getElementById('oQty').value),m=state.materials.find(x=>x.id===materialId);
+ if(!materialId||qty<=0)return alert('Pilih bahan dan jumlah yang benar.');
+ if(qty>materialStock(m))return alert(`Stok tidak cukup. Stok saat ini: ${materialStock(m)} ${m.unit}`);
+ state.outgoing.push({id:id(),date:document.getElementById('oDate').value,materialId,qty,destination:document.getElementById('oDest').value,note:document.getElementById('oNote').value.trim()});save();closeModal();render();
+}
+function openOpnameModal(){
+ modal('Stock Opname',`<div class="form-grid">
+ <div class="field"><label>Tanggal *</label><input id="sDate" type="date" value="${nowDate()}"></div>
+ <div class="field"><label>Bahan *</label><select id="sMat" onchange="document.getElementById('systemPreview').textContent=materialStock(state.materials.find(x=>x.id===this.value))">${materialOptions()}</select></div>
+ <div class="field"><label>Stok Sistem</label><input id="systemPreview" value="0" readonly></div>
+ <div class="field"><label>Stok Fisik *</label><input id="sActual" type="number" min="0" step="any"></div>
+ <div class="field" style="grid-column:1/-1"><label>Catatan</label><textarea id="sNote"></textarea></div>
+ </div><div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveOpname()">Simpan</button></div>`);
+}
+function saveOpname(){
+ const materialId=document.getElementById('sMat').value,m=state.materials.find(x=>x.id===materialId);if(!materialId)return alert('Pilih bahan.');
+ state.stockOpname.push({id:id(),date:document.getElementById('sDate').value,materialId,systemStock:materialStock(m),actualStock:num(document.getElementById('sActual').value),note:document.getElementById('sNote').value.trim()});save();closeModal();render();
+}
+function openSaleModal(){
+ modal('Penjualan Baru',`<div class="form-grid">
+ <div class="field"><label>Tanggal *</label><input id="vDate" type="date" value="${nowDate()}"></div>
+ <div class="field"><label>No. Transaksi</label><input id="vInvoice" value="INV-${new Date().getTime().toString().slice(-6)}"></div>
+ <div class="field"><label>Pelanggan</label><input id="vCustomer" placeholder="Nama pelanggan / Umum"></div>
+ <div class="field"><label>Produk / Jasa *</label><input id="vItem" list="productList" placeholder="Contoh: Cetak Foto 8R"><datalist id="productList">${state.products.map(p=>`<option value="${esc(p.name)}">`).join('')}</datalist></div>
+ <div class="field"><label>Qty</label><input id="vQty" type="number" min="1" value="1"></div>
+ <div class="field"><label>Harga Satuan *</label><input id="vPrice" type="number" min="0"></div>
+ <div class="field"><label>Diskon</label><input id="vDiscount" type="number" min="0" value="0"></div>
+ <div class="field"><label>Metode Pembayaran</label><select id="vMethod"><option>Cash</option><option>Transfer</option><option>QRIS</option><option>COD</option><option>Piutang</option></select></div>
+ </div><div class="card" style="margin-top:15px;background:#f8fafc"><b>Total: <span id="saleTotalPreview">${money(0)}</span></b></div>
+ <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveSale()">Simpan Penjualan</button></div>`);
+ ['vQty','vPrice','vDiscount'].forEach(x=>document.getElementById(x).addEventListener('input',updateSaleTotal));updateSaleTotal();
+}
+function updateSaleTotal(){const total=Math.max(0,num(document.getElementById('vQty')?.value)*num(document.getElementById('vPrice')?.value)-num(document.getElementById('vDiscount')?.value));const el=document.getElementById('saleTotalPreview');if(el)el.textContent=money(total)}
+function saveSale(){
+ const qty=num(document.getElementById('vQty').value),price=num(document.getElementById('vPrice').value),discount=num(document.getElementById('vDiscount').value),item=document.getElementById('vItem').value.trim();if(!item||qty<=0||price<0)return alert('Produk/jasa, qty, dan harga harus diisi.');
+ state.sales.push({id:id(),date:document.getElementById('vDate').value,invoice:document.getElementById('vInvoice').value.trim(),customer:document.getElementById('vCustomer').value.trim()||'Umum',item,qty,price,discount,total:Math.max(0,qty*price-discount),method:document.getElementById('vMethod').value});save();closeModal();render();
+}
+function openProductModal(editId=null){
+ const p=state.products.find(x=>x.id===editId)||{};
+ modal(editId?'Edit Produk/Jasa':'Tambah Produk/Jasa',`<div class="form-grid">
+ <div class="field"><label>Nama *</label><input id="pName" value="${esc(p.name)}"></div>
+ <div class="field"><label>Kategori</label><input id="pCat" value="${esc(p.category||'Jasa Printing')}"></div>
+ <div class="field"><label>Satuan</label><input id="pUnit" value="${esc(p.unit||'pcs')}"></div>
+ <div class="field"><label>Harga Jual</label><input id="pSell" type="number" value="${num(p.sellPrice)}"></div>
+ <div class="field"><label>HPP / Modal</label><input id="pCost" type="number" value="${num(p.cost)}"></div>
+ </div><div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveProduct('${editId||''}')">Simpan</button></div>`);
+}
+function saveProduct(editId){
+ const name=document.getElementById('pName').value.trim();if(!name)return alert('Nama wajib diisi.');
+ const data={id:editId||id(),name,category:document.getElementById('pCat').value.trim(),unit:document.getElementById('pUnit').value.trim()||'pcs',sellPrice:num(document.getElementById('pSell').value),cost:num(document.getElementById('pCost').value)};
+ if(editId)state.products[state.products.findIndex(x=>x.id===editId)]=data;else state.products.push(data);save();closeModal();render();
+}
+function editProduct(id){openProductModal(id)}
+function openExpenseModal(){
+ modal('Tambah Pengeluaran',`<div class="form-grid">
+ <div class="field"><label>Tanggal *</label><input id="eDate" type="date" value="${nowDate()}"></div>
+ <div class="field"><label>Kategori *</label><select id="eCat"><option>Bahan Baku</option><option>Listrik</option><option>Internet</option><option>Transportasi</option><option>Operasional</option><option>Peralatan</option><option>Marketing</option><option>Lainnya</option></select></div>
+ <div class="field"><label>Deskripsi *</label><input id="eDesc" placeholder="Contoh: Beli tinta Epson"></div>
+ <div class="field"><label>Nominal *</label><input id="eAmount" type="number" min="0"></div>
+ <div class="field"><label>Metode</label><select id="eMethod"><option>Cash</option><option>Transfer</option><option>QRIS</option><option>Debit</option></select></div>
+ <div class="field"><label>Referensi</label><input id="eRef"></div>
+ </div><div class="form-actions"><button class="btn btn-light" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveExpense()">Simpan</button></div>`);
+}
+function saveExpense(){
+ const desc=document.getElementById('eDesc').value.trim(),amount=num(document.getElementById('eAmount').value);if(!desc||amount<=0)return alert('Deskripsi dan nominal wajib diisi.');
+ state.expenses.push({id:id(),date:document.getElementById('eDate').value,category:document.getElementById('eCat').value,description:desc,amount,method:document.getElementById('eMethod').value,ref:document.getElementById('eRef').value.trim()});save();closeModal();render();
+}
+function materialOptions(){return state.materials.length?state.materials.map(m=>`<option value="${m.id}">${esc(m.name)} — stok ${materialStock(m)} ${esc(m.unit)}</option>`).join(''):'<option value="">Belum ada bahan</option>'}
+
+function deleteItem(collection,itemId){
+ if(!confirm('Hapus data ini? Tindakan ini tidak dapat dibatalkan.'))return;
+ state[collection]=state[collection].filter(x=>x.id!==itemId);save();render();
+}
+function saveSettings(){state.settings.businessName=document.getElementById('setBusiness').value.trim()||'BLESSIE PRINTING';state.settings.lowStockDefault=num(document.getElementById('setMin').value)||5;save();render();alert('Pengaturan tersimpan.')}
+function backupData(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`blessie-backup-${nowDate()}.json`;a.click();URL.revokeObjectURL(a.href);
+}
+function restoreData(input){
+ const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{try{const x=JSON.parse(e.target.result);state={...structuredClone(defaultState),...x};save();render();alert('Backup berhasil dipulihkan.')}catch(err){alert('File backup tidak valid.')}};r.readAsText(file);
+}
+function resetData(){if(confirm('Yakin ingin menghapus SEMUA data aplikasi? Backup terlebih dahulu jika diperlukan.')){state=structuredClone(defaultState);save();render();}}
+function filterTable(q,id){const rows=document.querySelectorAll(`#${id} tbody tr`);q=q.toLowerCase();rows.forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none')}
+function exportCSV(){
+ let rows=[['Jenis','Tanggal','Nama/Deskripsi','Qty','Nominal','Keterangan']];
+ state.sales.forEach(x=>rows.push(['Penjualan',x.date,x.item,x.qty,x.total,x.customer]));
+ state.expenses.forEach(x=>rows.push(['Pengeluaran',x.date,x.description,'',x.amount,x.category]));
+ state.incoming.forEach(x=>{const m=state.materials.find(y=>y.id===x.materialId);rows.push(['Bahan Masuk',x.date,m?.name||'',x.qty,x.qty*x.unitPrice,x.supplier])});
+ state.outgoing.forEach(x=>{const m=state.materials.find(y=>y.id===x.materialId);rows.push(['Bahan Keluar',x.date,m?.name||'',x.qty,'',x.destination])});
+ const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`blessie-laporan-${nowDate()}.csv`;a.click();URL.revokeObjectURL(a.href);
+}
+
+const oldRender=render;
+render=function(){oldRender();if(currentPage==='reports')drawReportChart();}
+render();
 </script>
-
 </body>
 </html>
